@@ -15,24 +15,38 @@ dotenv.config();
 
 main();
 
-
 router.get("/download/:filename", async (ctx) => {
   const { filename } = ctx.params; 
   const filePath = path.join(__dirname, "../src/service/exports" , filename);
 
   console.log(filePath)
+  console.log(`Buscando archivo en: ${filePath}`);
+
   if (!fs.existsSync(filePath)) {
     ctx.status = 404;
     ctx.body = { error: "El archivo no existe" };
     return;
   }
 
+  try {
+    ctx.set("Content-Disposition", `attachment; filename=${filename}`);
+    ctx.set("Content-Type", "application/octet-stream");
 
-  ctx.set("Content-Disposition", `attachment; filename=${filename}`);
-  ctx.set("Content-Type", "application/octet-stream");
+    // Crear stream y manejar errores
+    const fileStream = fs.createReadStream(filePath);
 
+    fileStream.on("error", (err) => {
+      console.error("Error al leer el archivo:", err);
+      ctx.status = 500;
+      ctx.body = { error: "Error al leer el archivo" };
+    });
 
-  ctx.body = fs.createReadStream(filePath);
+    ctx.body = fileStream;
+  } catch (error) {
+    console.error("Error en la descarga:", error);
+    ctx.status = 500;
+    ctx.body = { error: "Error interno del servidor" };
+  }
 });
 
 app.use(router.routes()).use(router.allowedMethods());
