@@ -53,7 +53,7 @@ export const template = (mesAnio: string, url:string) => {
       <tr style="height: 24px"></tr>
      <tr style="height: 38px" align="center">
         <td>
-          <a href="${url}" style="display: inline-block; text-decoration: none;">
+          <a href="${url}" target="_blank" style="display: inline-block; text-decoration: none;">
             <img src="https://resources.ilissolutions.cl/Cron-events/button.png" style="border: 0; display: block;"/>
           </a>
         </td>
