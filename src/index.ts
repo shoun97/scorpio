@@ -18,7 +18,7 @@ main();
 
 router.get("/download/:filename", async (ctx) => {
   const { filename } = ctx.params; 
-  const filePath = path.join(__dirname, "../service/exports" , filename);
+  const filePath = path.join(__dirname, "../src/service/exports" , filename);
 
   console.log(filePath)
   if (!fs.existsSync(filePath)) {
