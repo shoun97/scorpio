@@ -1,0 +1,1 @@
+export const emailEndpoint = "https://api.farallonesholding.cl/mail"
