@@ -5,7 +5,7 @@ export const sendEmail = async (
   template: string,
   subject: string,
 ) => {
-  return
+
   const emailConfig = {
     host: process.env.EMAIL_HOST,
     port: process.env.EMAIL_PORT,
