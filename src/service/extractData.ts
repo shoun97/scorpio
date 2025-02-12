@@ -42,46 +42,44 @@ export const exportData = async () => {
 
       const { rows } = await client.query(
         `
-        SELECT 
-          C.con_id, 
-          MOV.mov_fechacreacionreal::timestamp without time zone,
-          C.con_fechacreacioncontratoreal::timestamp without time zone,
-          C.con_codbarra, 
-          C.con_pesototalcontratado, 
-          CC.cc_id_codcentro,
-          CC.cc_nomcentrocosto,
-          CC.cc_direccion,
-          CC.cc_fono,
-          INV.inv_nominv,
-          INV.inv_rutemisor,
-          INV.inv_rznsocialemisor,
-          CAT.cat_nomcateg,
-          row_number() OVER (ORDER BY C.con_id)::BIGINT,
-          CLI.cli_id_doc,
-          CLI.cli_nombres,
-          CLI.cli_apellidopaterno,
-          CLI.cli_apellidomaterno,
-          MOT.mot_descripcion,
-          DTE.dte_folio,
-          USR.usr_rut,
-          USR.usr_nombre,
-          RESP.usr_rut,
-          RESP.usr_nombre,
-          RESP.usr_apellidopaterno
-        FROM PUBLIC.tcc_contrato C
-          INNER JOIN tcc_centrocosto CC ON CC.cc_id = C.con_cc_id
-          INNER JOIN tcc_inversion INV ON INV.inv_id = CC.cc_inv_id
-          INNER JOIN tcc_categoria CAT ON CAT.cat_id = C.con_cat_id
-          INNER JOIN tcc_cliente CLI ON CLI.cli_id = C.con_cli_id
-          INNER JOIN tcc_motivo MOT ON MOT.mot_id = C.con_mot_id
-          INNER JOIN tcc_dte DTE ON DTE.dte_doc_id = C.con_id
-          INNER JOIN tcc_movimiento MOV ON MOV.mov_id = DTE.dte_mov_id
-          INNER JOIN tcc_usuario USR ON USR.usr_id = C.con_usr_id
+          SELECT
+            row_number() over (ORDER BY C.con_id)::text as "N°",
+            CC.cc_nomcentrocosto as "Sucursal",
+            CAT.cat_nomcateg::text as "Categoría",
+            C.con_codbarra::text as "N° Contrato",
+            C.con_pesototalcontratado::text as "Gramos Contrato",
+            DTE.dte_folio::text as "N° Factura",
+            to_char(C.con_fechacreacioncontratoreal, 'DD-MM-YYYY HH24:MI')::text as "Fecha Inicio",     
+            to_char(MOV.mov_fechacreacionreal, 'DD-MM-YYYY HH24:MI')::text as "Fecha Anulación",
+            CLI.cli_id_doc::text as "Cliente RUT",
+            CLI.cli_nombres::text as "Cliente Nombres",
+            CLI.cli_apellidopaterno::text as "Cliente Apellido Paterno",
+            CLI.cli_apellidomaterno::text as "Cliente Apellido Materno",
+            USR.usr_rut as "Responsable Anulación RUT",
+            USR.usr_nombre as "Responsable Anulación Nombre",
+            USR.usr_apellidopaterno as "Responsable Anulación Apellido Paterno",
+            RESP.usr_rut as "Responsable Transacción RUT",
+            RESP.usr_nombre as "Responsable Transacción Nombre",
+            RESP.usr_apellidopaterno as "Responsable Transacción Apellido Paterno",
+            MOT.mot_descripcion::text as "Motivo"
+
+          FROM PUBLIC.tcc_contrato C
+            INNER JOIN tcc_centrocosto CC ON CC.cc_id = C.con_cc_id
+            INNER JOIN tcc_inversion INV ON INV.inv_id = CC.cc_inv_id
+            INNER JOIN tcc_categoria CAT ON CAT.cat_id = C.con_cat_id
+            INNER JOIN tcc_cliente CLI ON CLI.cli_id = C.con_cli_id
+            INNER JOIN tcc_motivo MOT ON MOT.mot_id = C.con_mot_id
+            INNER JOIN tcc_dte DTE ON DTE.dte_doc_id = C.con_id
+            INNER JOIN tcc_movimiento MOV ON MOV.mov_id = DTE.dte_mov_id
+            INNER JOIN tcc_usuario USR ON USR.usr_id = C.con_usr_id
           INNER JOIN tcc_usuario RESP ON RESP.usr_id = MOV.mov_usr_id
-        LIMIT 5000;
+          WHERE 
+
+            C.con_est_id = 12  -- ANULADO
+            AND MOV.mov_cop_id = 2 -- CR
+            LIMIT 5000;
         `
       );
-
       contratos.push(...rows);
     } catch (error) {
       console.error(`❌ Error en ${t.rip_database}:`, error);

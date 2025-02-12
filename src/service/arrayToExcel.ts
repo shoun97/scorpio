@@ -2,23 +2,23 @@ import path from "path";
 import fs from "fs";
 import ExcelJS from "exceljs";
 
-export const arrayToExcel = async (array: Object[], fileName = "datos.xlsx") => {
+export const arrayToExcel = async (array: any[], fileName = "datos.xlsx") => {
   if (!array || array.length === 0) {
     console.error("❌ El array está vacío o no es válido.");
     return;
   }
 
   const workbook = new ExcelJS.Workbook();
-  const worksheet = workbook.addWorksheet("Contratos Anulados");
+  const worksheet = workbook.addWorksheet("Contratos Anulados CR");
 
   const headers = Object.keys(array[0]);
 
   worksheet.addRow(headers);
-  worksheet.getRow(1).font = { bold: true, color: { argb: "FFFFFFFF" } };
+  worksheet.getRow(1).font = { bold: true, color: { argb: "000000" } };
   worksheet.getRow(1).fill = {
     type: "pattern",
     pattern: "solid",
-    fgColor: { argb: "FF4F81BD" }, // Color de fondo azul
+    fgColor: { argb: "FFCC99" }, 
   };
 
   array.forEach((obj) => {
@@ -31,7 +31,7 @@ export const arrayToExcel = async (array: Object[], fileName = "datos.xlsx") => 
     ref: "A1",
     headerRow: true,
     style: {
-      theme: "TableStyleMedium9",
+      theme: "TableStyleMedium7",
       showRowStripes: true,
     },
     columns: headers.map((header) => ({ name: header, filterButton: true })),
