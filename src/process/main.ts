@@ -13,5 +13,6 @@ const disparadorCorreoAnulados = async () => {
 };
 
 export const main = async () => {
-  triggerProcess("10 * * * * *", disparadorCorreoAnulados)
+  await disparadorCorreoAnulados()
+  /* triggerProcess("10 * * * * *", disparadorCorreoAnulados) */
 };
