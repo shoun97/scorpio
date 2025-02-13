@@ -9,11 +9,6 @@
     "dev": "nodemon --watch src --ext ts --exec ts-node src/index.ts"
   },
   "dependencies": {
-    "@types/cli-progress": "^3.11.6",
-    "@types/koa": "^2.15.0",
-    "@types/koa-router": "^7.4.8",
-    "@types/node-cron": "^3.0.11",
-    "@types/pg": "^8.11.11",
     "axios": "^1.7.9",
     "cli-progress": "^3.12.0",
     "dotenv": "^16.4.7",
@@ -28,8 +23,11 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@types/cli-progress": "^3.11.6",
     "@types/koa": "^2.15.0",
+    "@types/koa-router": "^7.4.8",
     "@types/node-cron": "^3.0.11",
+    "@types/pg": "^8.11.11",
     "nodemon": "^3.1.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"

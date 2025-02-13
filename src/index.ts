@@ -4,8 +4,6 @@ import moment from "moment";
 import dotenv from "dotenv";
 import fs from "fs";
 import path from "path";
-import { exportData } from "./service/extractData";
-import { arrayToExcel } from "./service/arrayToExcel";
 import { main } from "./process/main";
 
 const app = new Koa();

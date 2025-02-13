@@ -22,7 +22,7 @@ export const template = (mesAnio: string, url:string) => {
     </tr>
     <tr style="padding-left: 30px;padding-right: 30px;padding-bottom: 16px;">
       <td align="center">
-        <img src="https://resources.ilissolutions.cl/Cron-events/representacion-contrato.png"/>
+        <img src="https://resources.ilissolutions.cl/Cron-events/fileimage.png"/>
       </td>
     </tr>
     <tr>
@@ -41,7 +41,7 @@ export const template = (mesAnio: string, url:string) => {
     font-weight: 400;
     line-height: 150%;">
       <td style="padding-left: 30px;padding-right: 30px;">
-        <p>Estimado/a equipo de <b>Gerencia, Operaciones y Soporte,</b> <br/></p>
+        <p>Estimado/a equipo de <b>Gerencia y Operaciones,</b> <br/></p>
 
         Adjunto encontrarán el <b>Informe Mensual de Contratos Anulados</b> 
         correspondiente al período <b>${mesAnio}</b>. 
@@ -164,7 +164,9 @@ export const template = (mesAnio: string, url:string) => {
         <a href="https://www.facebook.com/Aurusjoyeria/?locale=es_LA" target="_blank" style="text-decoration: none;">
           <img style="width: 48px; height: 48px;" src="https://resources.ilissolutions.cl/Cron-events/Facebook.png"/>
         </a>
-        
+        <a href="https://aurusjoyeria.cl/" target="_blank" style="text-decoration: none; margin-left: 16px;">
+          <img style="width: 48px; height: 48px;" src="https://resources.ilissolutions.cl/Cron-events/global_ico.png"/>
+        </a>
       </td>
     </tr>
   </table>

@@ -9,8 +9,14 @@ export const exportData = async () => {
   //@ts-ignore
   const totalDBs = test.length; 
 
-  const fechaInicio = moment().startOf("month").format("YYYY-MM-DD HH:mm:ss");
-  const fechaFin = moment().endOf("month").format("YYYY-MM-DD HH:mm:ss");
+  const fechaInicio = moment()
+                        .subtract("year", 1)
+                        .subtract("month", 1).startOf("month")
+                        .format("YYYY-MM-DD HH:mm:ss");
+  const fechaFin = moment()
+                        .subtract("year", 1)
+                        .subtract("month", 1).endOf("month")
+                        .format("YYYY-MM-DD HH:mm:ss");
 
   const contratos = [];
 
@@ -43,7 +49,6 @@ export const exportData = async () => {
       const { rows } = await client.query(
         `
           SELECT
-            row_number() over (ORDER BY C.con_id)::text as "N°",
             CC.cc_nomcentrocosto as "Sucursal",
             CAT.cat_nomcateg::text as "Categoría",
             C.con_codbarra::text as "N° Contrato",
@@ -62,7 +67,6 @@ export const exportData = async () => {
             RESP.usr_nombre as "Responsable Transacción Nombre",
             RESP.usr_apellidopaterno as "Responsable Transacción Apellido Paterno",
             MOT.mot_descripcion::text as "Motivo"
-
           FROM PUBLIC.tcc_contrato C
             INNER JOIN tcc_centrocosto CC ON CC.cc_id = C.con_cc_id
             INNER JOIN tcc_inversion INV ON INV.inv_id = CC.cc_inv_id
@@ -72,14 +76,16 @@ export const exportData = async () => {
             INNER JOIN tcc_dte DTE ON DTE.dte_doc_id = C.con_id
             INNER JOIN tcc_movimiento MOV ON MOV.mov_id = DTE.dte_mov_id
             INNER JOIN tcc_usuario USR ON USR.usr_id = C.con_usr_id
-          INNER JOIN tcc_usuario RESP ON RESP.usr_id = MOV.mov_usr_id
+            INNER JOIN tcc_usuario RESP ON RESP.usr_id = MOV.mov_usr_id
           WHERE 
-
             C.con_est_id = 12  -- ANULADO
             AND MOV.mov_cop_id = 2 -- CR
-            LIMIT 5000;
-        `
+            AND C.con_fechacreacioncontratoreal BETWEEN $1 AND $2
+          LIMIT 5000;
+        `,
+        [fechaInicio, fechaFin] 
       );
+
       contratos.push(...rows);
     } catch (error) {
       console.error(`❌ Error en ${t.rip_database}:`, error);
