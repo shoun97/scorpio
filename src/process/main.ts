@@ -6,7 +6,7 @@ const disparadorCorreoAnulados = async () => {
   const nombreExcel = await exportData();
 
   sendEmail(
-    ["murra@ilissolutions.cl"],
+    ["murra@ilissolutions.cl", "vramos@ilissolutions.cl"],
     template("01/2025", process.env.SERVIDOR + "/download/" + nombreExcel),
     "Contratos Anulados del Mes"
   );

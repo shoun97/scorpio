@@ -10,11 +10,9 @@ export const exportData = async () => {
   const totalDBs = test.length; 
 
   const fechaInicio = moment()
-                        .subtract("year", 1)
                         .subtract("month", 1).startOf("month")
                         .format("YYYY-MM-DD HH:mm:ss");
   const fechaFin = moment()
-                        .subtract("year", 1)
                         .subtract("month", 1).endOf("month")
                         .format("YYYY-MM-DD HH:mm:ss");
 
